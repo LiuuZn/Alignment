@@ -1,0 +1,219 @@
+import string
+
+class methods():
+    def __Alignment__(self,aSequence,bSequence):
+        firstSequence = []
+        secondSequence = []
+
+        for i in aSequence:
+           firstSequence.append(i)
+           # print (i)
+
+        # print ("hahahah")
+
+        for i in bSequence:
+            secondSequence.append(i)
+
+        # constructing two demension array
+        alignmentArray = [[0 for i in range(len(firstSequence)+1)]for y in range(len(secondSequence)+1)]
+        # print (alignmentArray)
+
+        # give value to arrays
+
+        alignmentArray[0][0] = 0
+
+        # print (alignmentArray)
+        # print ("\n")
+
+        for column in range(0,len(secondSequence) + 1):
+            for row in range(0,len(firstSequence) + 1):
+
+                a = b = c = 0
+                if (column * row != 0):
+                    if (firstSequence[row - 1] == secondSequence[column - 1]):
+                        # print (firstSequence[row])
+                        # print (secondSequence[column])
+                        a = alignmentArray[column - 1][row - 1] + 2
+                    else:
+                        a = alignmentArray[column - 1][row - 1] - 1
+
+                    b = alignmentArray[column - 1][row] - 2
+                    c = alignmentArray[column][row - 1] - 2
+
+                    alignmentArray[column][row] = max(a, b, c)
+
+
+                if (column == 0):
+                    alignmentArray[column][row] = (-2 * row)
+                if (row == 0):
+                    alignmentArray[column][row] = (-2 * column)
+
+
+                # print(alignmentArray[column][row])
+
+        # for column in range(0,secondSequence.__len__() +1):
+            # [::-1]:
+            # print (alignmentArray[column])
+            # print (column)
+
+        aSequencePosition = alignmentArray[len(bSequence)].index(max(alignmentArray[len(bSequence)]))
+
+        bSequencePosition = len(bSequence)
+        reverseAlignedBSequence = []
+        reverseAlignedASequence = []
+        maximun = max(alignmentArray[bSequencePosition - 1][aSequencePosition],
+                      alignmentArray[bSequencePosition - 1][aSequencePosition - 1],
+                      alignmentArray[bSequencePosition][aSequencePosition - 1])
+        # print ("The sequence similarity is")
+        # print (maximun/(2*max(len(aSequence),len(bSequence))))
+        alignmentScore = 0
+        while (True):
+            # calculate the maximun number
+            # print (alignmentArray[bSequencePosition][aSequencePosition])
+            # print (aSequencePosition)
+            # print (bSequencePosition)
+            # print ()
+            maximun = max(alignmentArray[bSequencePosition - 1][aSequencePosition],alignmentArray[bSequencePosition - 1][aSequencePosition - 1],alignmentArray[bSequencePosition][aSequencePosition - 1])
+            if (aSequencePosition == 0 or bSequencePosition == 0):
+                break
+
+            # print (maximun)
+            # need to be rewrite
+
+            if alignmentArray[bSequencePosition - 1][aSequencePosition - 1] == alignmentArray[bSequencePosition][aSequencePosition] - 2 and alignmentArray[bSequencePosition - 1][aSequencePosition - 1] == maximun :
+                bSequencePosition -= 1
+                aSequencePosition -= 1
+                # print(aSequencePosition)
+                # print(bSequencePosition)
+                # print()
+                reverseAlignedASequence.append(aSequence[aSequencePosition])
+                reverseAlignedBSequence.append(bSequence[bSequencePosition])
+                alignmentScore += 1
+                continue
+
+            if alignmentArray[bSequencePosition - 1][aSequencePosition - 1] == alignmentArray[bSequencePosition][aSequencePosition] + 1 and alignmentArray[bSequencePosition - 1][aSequencePosition - 1] == maximun:
+                bSequencePosition -= 1
+                aSequencePosition -= 1
+                # print(aSequencePosition)
+                # print(bSequencePosition)
+                # print()
+                reverseAlignedASequence.append(aSequence[aSequencePosition])
+                reverseAlignedBSequence.append(bSequence[bSequencePosition])
+                continue
+
+            if alignmentArray[bSequencePosition - 1][aSequencePosition] == alignmentArray[bSequencePosition][aSequencePosition] + 2 and alignmentArray[bSequencePosition - 1][aSequencePosition] == maximun:
+                bSequencePosition -= 1
+                # print(aSequencePosition)
+                # print(bSequencePosition)
+                # print()
+                reverseAlignedASequence.append("-")
+                reverseAlignedBSequence.append(bSequence[bSequencePosition])
+
+                continue
+
+            if alignmentArray[bSequencePosition][aSequencePosition - 1] == alignmentArray[bSequencePosition][aSequencePosition] + 2 and alignmentArray[bSequencePosition][aSequencePosition - 1] == maximun:
+                aSequencePosition -= 1
+                # print(aSequencePosition)
+                # print(bSequencePosition)
+                # print()
+                reverseAlignedASequence.append(aSequence[aSequencePosition])
+                reverseAlignedBSequence.append("-")
+
+                continue
+            if alignmentArray[bSequencePosition - 1][aSequencePosition - 1] == alignmentArray[bSequencePosition][aSequencePosition] - 2 :
+                bSequencePosition -= 1
+                aSequencePosition -= 1
+                # print(aSequencePosition)
+                # print(bSequencePosition)
+                # print()
+                reverseAlignedASequence.append(aSequence[aSequencePosition])
+                reverseAlignedBSequence.append(bSequence[bSequencePosition])
+                alignmentScore += 1
+                continue
+
+            if alignmentArray[bSequencePosition - 1][aSequencePosition - 1] == alignmentArray[bSequencePosition][aSequencePosition] + 1:
+                bSequencePosition -= 1
+                aSequencePosition -= 1
+                # print(aSequencePosition)
+                # print(bSequencePosition)
+                # print()
+                reverseAlignedASequence.append(aSequence[aSequencePosition])
+                reverseAlignedBSequence.append(bSequence[bSequencePosition])
+                continue
+
+            if alignmentArray[bSequencePosition - 1][aSequencePosition] == alignmentArray[bSequencePosition][aSequencePosition] + 2:
+                bSequencePosition -= 1
+                # print(aSequencePosition)
+                # print(bSequencePosition)
+                # print()
+                reverseAlignedASequence.append("-")
+                reverseAlignedBSequence.append(bSequence[bSequencePosition])
+                continue
+
+            if alignmentArray[bSequencePosition][aSequencePosition - 1] == alignmentArray[bSequencePosition][aSequencePosition] + 2:
+                aSequencePosition -= 1
+                # print(aSequencePosition)
+                # print(bSequencePosition)
+                # print()
+                reverseAlignedASequence.append(aSequence[aSequencePosition])
+                reverseAlignedBSequence.append("-")
+                continue
+
+        alignornot = []
+        for i in range(len(reverseAlignedASequence)):
+            if (reverseAlignedASequence[i] == reverseAlignedBSequence[i]):
+                alignornot.append("|")
+            else:
+                alignornot.append(" ")
+        inte_reverseAlignedASequence = []
+
+        print ("".join(reverseAlignedASequence[::-1]))
+        print ("".join(alignornot[::-1]))
+        print ("".join(reverseAlignedBSequence[::-1]))
+        print ("The length of the aligned sequences is ")
+        print (len(reverseAlignedASequence))
+        print ("The alignment score is ")
+        print (alignmentScore)
+        print ("The sequence similarity between these two sequences is")
+        print (alignmentScore/len(reverseAlignedASequence))
+
+
+if __name__ == "__main__":
+    # hwsequence = method()
+    filepath = input( "Please enter file path and name." )
+    # filepath = "~/3_disk/liuxin/alignment.fasta"
+    print("You want to open %s" % filepath)
+    fh = open(filepath)
+    print ("Successfully open the file you want.")
+
+    sequence = []
+    sequenceName = []
+    sequenceNumber = 0
+    for line in fh:
+        if line.startswith('>'):
+            sequenceName.append(line.replace('>','').split()[0])
+            sequenceNumber += 1
+            sequence.append('')
+            # print (sequenceName[sequenceNumber - 1])
+        else:
+            sequence[sequenceNumber - 1] = (sequence[sequenceNumber - 1] + (line.replace('\n','')))
+            # sequence.append(line.replace('\n',''))
+    fh.close()
+
+    # print (sequenceName)
+    # print (sequence)
+
+    # for i in seq.keys():
+
+
+    computingSequenceNumber = 0
+    hardWork = methods()
+    while (computingSequenceNumber < len(sequence) - 1):
+        t =  1
+
+        while (t <= len(sequence) - 1 - computingSequenceNumber):
+            print ("Aligning %s and %s" %(sequenceName[computingSequenceNumber],sequenceName[computingSequenceNumber + t]))
+            hardWork.__Alignment__(sequence[computingSequenceNumber],sequence[computingSequenceNumber + t])
+            print ("")
+            t += 1
+        computingSequenceNumber += 1
