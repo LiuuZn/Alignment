@@ -18,3 +18,4 @@ if __name__ == "__main__":
         newfile = open("/3_disk/liuxin/newblast/Modifiedchr"+ str(chr + 1),"a+")
         newfile.write(modifiedcontent)
         newfile.close()
+       
