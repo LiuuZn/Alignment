@@ -3,6 +3,7 @@ from PIL import Image
 import time
 
 class NewClusterMethod():
+    # ChimeraClustering
 
 
     def __generatesimilarity__(self,cluster,originalSimilarityMatrix):
